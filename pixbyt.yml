@@ -1,0 +1,33 @@
+jobs:
+- name: welcome
+  tasks:
+  - tap-pixlet--welcome target-tidbyt
+- name: welcome--webp
+  tasks:
+  - tap-pixlet--welcome target-webp
+
+- name: welcome--avatars
+  tasks:
+  - tap-pixlet--welcome--avatars target-tidbyt
+- name: welcome--avatars--webp
+  tasks:
+  - tap-pixlet--welcome--avatars target-webp
+
+plugins:
+  extractors:
+  - name: tap-pixlet--welcome
+    inherit_from: tap-pixlet
+    config:
+      path: apps/welcome
+      app_config:
+        server_url: $WELCOME_SERVER_URL # Welcome Server URL. If HTTPS, certificate must be valid. Example: 'https://welcome.example.com'
+        home_id: $WELCOME_HOME_ID # Home ID. Example: 'main'
+        avatars_only: false # Show a grid of avatars instead of rooms with names
+
+  - name: tap-pixlet--welcome--avatars
+    inherit_from: tap-pixlet--welcome
+    config:
+      installation_id: welcome--avatars
+      app_config:
+        avatars_only: true # Show a grid of avatars instead of rooms with names
+        extra_avatar_urls: $WELCOME_EXTRA_AVATAR_URLS # Comma-separated list of extra avatar URLs to show in the grid. Example: 'https://example.com/avatar1.png,https://example.com/avatar2.png'
